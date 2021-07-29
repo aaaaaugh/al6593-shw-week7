@@ -1,0 +1,84 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\qc\f0\fs22\lang9 CODE LAB 1 - WEEK 8 - UI AND SCRIPTABLEOBJECTS\par
+
+\pard\sa200\sl276\slmult1 >Making a simple game with just UI elements \line >Basically a very basic text-adventure game \par
+>3D Project > Camera > Solid Color \par
+>GameObject > UI > Text\par
+
+\pard\sa200\sl276\slmult1\qr REMINDERS: \line WorldSpace is if you want your UI\line to appear in the world, over certain objs\line EventSystem handles stuff like if\line a button was clicked on or smthng\par
+
+\pard\sa200\sl276\slmult1 >Rename text to Title \line\tab -Text component is a UI component. Change the text color to YT \line\tab -FONT INCREASE (You can make the text box bigger, or overflow)\line\tab -Anchor text, yadda yadda...\line >Make body text w/ appropriate adjustments\line >GameObject > UI > Button \line\tab -You want this to be between the location text box and body text box. \line\tab -The UI button has its own text object inside. Change the name to North.\line\tab -Make three more buttons with South, East, and West.\par
+>GameManager time! Make a Scripts folder, and a new C# script.\line\tab -Create a new GameObject, call it GameManager.\line\tab -This is where you will manage all your responses to your clicks. \par
+>pLOT TWIST: Delete void Update function bc we're not going to use it. This... this is the madness of using a UI-driven Unity game. \par
+>We will be creating a Scriptable Object. \par
+\tab -First we need to put it in the right place - inside your Scripts Folder, create a new \line\tab folder. ScriptableObjects\line\tab -Create a new C# script inside that ScriptableObjects folder. \line\tab -Name it LocationScriptableObject.\par
+>This will look just like other MonoBehaviour's created in the past. That's fine. BUT this time, you will be removing the MonoBehaviour part of the script. \par
+\tab\tab public class LocationScriptableObject : \strike MonoBehaviour\strike0\par
+\tab ^public: this script/class can be seen outside of the context it's in. \line\tab ^class: short for classification. a way to categorize something as a type of thin, which \line\tab is the LocationScriptableObject. \line\tab ^MonoBehaviour is a class that exists inside of Unity. MonoBehaviour has a bunch of\line\tab functionality in it. We are extending an existing class. \line\tab ^Monobehaviour is what allows us to attach something to a GameObject. If you were\line\tab to omit the MonoBehaviour from the script, you could not longer attach it to a \tab GameObject. \par
+>We will be creating something that is still useful for our game, but will not have to be attached to a GameObject component. WILD. \line\line >Instead of using Monobehaviour, we will be using ScriptableObject. \par
+\tab -Yet you'll notice that you still can't add it to any GameObject component.\line\tab -The script needs to derive from Monobehaviour. This script, however, is instead\line\tab deriving from ScriptableObject. It is a simple data type that holds simple data. \par
+>You also get rid of void Start() and void Update() functions because they are useless for ScriptableObject. Only usable for Monobehaviour. \par
+>Replace it with this code instead:\line\line\tab [CreateAssetMenu (fileName = "New Location", \line\tab\tab menuName = "ScriptableObjects/Location", order = 0)]\tab\line\line\tab public class LocationScriptableObjects : ScriptableObject\par
+\tab\tab\{\line\tab\tab\tab public string locationName = "New Place"; \line\tab\tab\}\par
+>When you go back to Unity, you now have the option to access something called ScriptableObjects! Right click and you'll see ScriptableObjects > Location. WHAO!\par
+>Create a Location. It is going to create a thing that can hold data for you. Call it Home\par
+\tab -In the Inspector of Home, you can give the Location Name. Call it - My House\line\tab -(alternatively be like me and name it mi casa) \par
+>Create a new folder, call it Locations. Put your Home implementation inside that folder.\par
+>Make it less boring by adding another string\line\line\tab\{\line\tab\tab public string locationName = "New Place"; \line\tab\tab public string description = "Default Description";\line\line\tab\tab public LocationScriptableObject locationNorth\tab ;\line\tab\tab public LocationScriptableObject locationSouth;\line\tab\tab public LocationScriptableObject locationWest;\line\tab\tab public LocationScriptableObject locationEast;\line\tab\}\par
+\tab ^These locations will have a reference to other locations. \par
+>When you go back to Unity, you'll see all these cool new fields! NICE \par
+>Create yet ANOTHER NEW ScriptableObjectLocation - call it Home - Backyard.\line >Rename Home to Home - House.\line >Drag the ScriptableObject Home - Backyard to the Home - House component. Location North.\line >Make a description for your Home - Backyard scriptableobject. Drag your Home - House scriptable object to Location South. \par
+>Integrate this to your game. Go to your GameManager. \par
+\tab\tab public class GameManager : MonoBehaviour\line\tab\tab\{\line\tab\tab\tab public LocationScriptableObject currentLocation; //holds scriptobj\line\line\tab\tab\tab public Text locationNameText; //holds text component\line\tab\tab\tab public Text locationDescription; //holds text component\par
+\tab\tab\tab\line\tab\tab\tab void Start\line\tab\tab\tab\{\line\tab\tab\tab\tab UpdateLocation(); \line\tab\tab\tab\}\line\line\tab\tab\tab void UpdateLocation ()\line\tab\tab\tab\{\line\tab\tab\tab\tab Debug.Log(currentLocation); //writes on console\line\tab\tab\tab\}\line\tab\tab\}\line\line\tab\tab ^Create a publicLocationScriptableObject.\line\tab\tab ^Create a new function called UpdateLocation. This is not public - which\line\tab\tab means it cannot be accessed outside of the script. \line\tab\tab ^You're using the LocationScriptableObject to describe something that holds\line\tab\tab data. You put that data into your Current Location field. \line\tab\tab\tab -So drag Home - House into the Current Location field of the \line\tab\tab\tab GameManager script component. \line\tab\tab\line\tab\tab ^You CANNOT attach LocationScriptableObject to a GameObject, nor any of\line\tab\tab the ScriptableObjects - that's not what they do. \line\tab\tab\tab -BUT you can give them to a component to do something with. \par
+>Drag Title to Location Name Text of your Game Manager script component. \line >Drag Body to Location Description of your Game Manager script component. \par
+>Now we will modify our code to change our Location/Description, wherever our current location/scriptable object is. \par
+\tab\tab void UpdateLocation()\line\tab\tab\{\line\tab\tab\tab locationNameText.text = currentLocation.locationName; \line\tab\tab\tab locationDescription.text = currentLocation.description;\line\tab\tab\}\par
+\tab\tab ^This will change the set locationNameText and locationDescription of your \line\tab\tab game. Meaning, when you play your game the Title: location, and Body: \tab\tab\tab description, now change to what you wrote on the ScriptableObjects. \line\tab\line >LocationScriptableObjects script is a type of data, which allows for the ScriptableObjects, which is another block of data. DATA AFTER DATA. DATACEPTION.\par
+>By combining your scriptable objects together, you basically are building a network out - a \i game.\i0  Some good examples of what you can use with ScriptableObjects include custom card games. \par
+>Let's make one of these buttons function. \par
+\tab\tab public void MoveDirection(int dir) //pass an int called dir\line\tab\tab\{\line\tab\tab\tab if(dir == 0)\line\tab\tab\tab\{\line\tab\tab\tab\tab currentLocation = currentLocation.North;\line\tab\tab\tab\}\line\line\tab\tab\tab UpdateLocation();\line\tab\tab\}\par
+\tab\tab ^Making an if-argument that if you pass 0 to direction, it will change your \tab\tab\tab currentLocation to be whatever is North location. \par
+>In your code, go to your North button. Under the button component, there is an On Click section. When you click on the plus sign, it gives you the ability to do something with the button. Drag your GameManager onto this. \line\tab -Tells you to perform an action on this GameObject (if you click on this button).\line\tab -On the No Function, drop down and choose one of the components that is your\line\tab GameManager. Select GameManager, and choose MoveDirection (int). \line\line >Now when you play, you can click the North button and the UI is activated. \par
+>You want to do South, East, and West as well. Also, you're going to want to keep checking the dir variable. You could write four if-statements... \par
+>OR you could take the easier route and write out a switch statement! \par
+
+\pard\sa200\sl276\slmult1\qr //REMINDER: switch statements\line are conditional statements that allow\line for a single var against a # of constants\par
+
+\pard\sa200\sl276\slmult1\tab\tab public void MoveDirection(int dir)\line\tab\tab\{\line\tab\tab\tab switch (dir)\line\tab\tab\tab\{\line\tab\tab\tab\tab case 0: \line\tab\tab\tab\tab\tab currentLocation = currentLocation.locationNorth;\line\tab\tab\tab\tab\tab break;\line\tab\tab\tab\tab case 1:\line\tab\tab\tab\tab\tab currentLocation = currentLocation.locationSouth;\line\tab\tab\tab\tab\tab break; \line\tab\tab\tab\}\line\line\tab\tab\tab UpdateLocation();\line\tab\tab\}\line\line\tab\tab ^Switch-statements for North and South locations. \line\tab\tab ^Make sure to add the GameManager object to the South component as\line\tab\tab well. Drag GameManager to the On Click() and after you choose the \line\tab\tab GameManager.MoveDirection function, replace 0 with 1. \line\tab\tab\tab -You are writing 1 bc that's the case # in the script. \par
+>Do the same thing with your East and West buttons. \par
+>Once you have all four nodes, go to your ScriptableObjects > Locations folder. \line >Create a new ScriptableObject > Location\line >Home - FrontYard. And Home - Driveway. And uhhh Home - Pool. Fun house. Fun house.\line >Proceed to change the Location Name components and description. \par
+>Now you just gotta wire this baby up. Revv revv... vroom vroom. \line >Put the corresponding ScriptableObjects in the right Location components. \par
+>But try clicking West. And then click West again - oh no. ERROR. We should make it, so that\line if you can't proceed West any further, then you can't go West. \par
+>On your GameManager script, add a different button. You can refer to buttons just like any other GameObject.\par
+\tab\tab public GameObject buttonNorth;\line\tab\tab public GameObject buttonSouth;\line\tab\tab public GameObject buttonWest;\line\tab\tab public GameObject buttonEast; \par
+>You're going to want to add a if-statement on your void UpdateLocation() function.\par
+\tab\tab\{\line\tab\tab\tab locationNameText.text = currentLocation.locationName;\line\tab\tab\tab locationDescription.text = currentLocation.description;\line\tab\tab\tab\line\tab\tab\tab if(currentLocation.locationNorth == null)\line\tab\tab\tab\{\line\tab\tab\tab\tab buttonNorth.SetActive(false);\line\tab\tab\tab\}\line\tab\tab\}\par
+\tab\tab ^If you don't have any locationNorth, the button will be hidden.\line\tab\tab ^But if it's NOT equal to null\par
+>Now drop the Button Objects into the GameManager so that it actually works. \par
+>WHOA! The button disappears. \par
+>What if the location does NOT equal to null? \par
+\tab\tab if (currentLocation.locationNorth == null)\line\tab\tab\{\line\tab\tab\tab buttonNorth.SetActive(false);\line\tab\tab\}\line\tab\tab else \line\tab\tab\{\line\tab\tab\tab buttonNorth.SetActive(true); \line\tab\tab\}\par
+>Make sure you do South, West, and East as well. \par
+>NEW REVELATION: When you edit whatever text you have on your ScriptableObjects components, it will still be there despite whether or not you have it in play mode! \line INTERESTING... it's as if Matt wasn't just updating stuff in the components intentionally to showcase this fascinating tidbit. \line\line >With ScriptableObjects, the changes will persist even AFTER Play mode is gone. That could be really cool! MAYBE ScriptableObjects is a way to PERSIST data, even when you're not playing!!!\par
+>Create a new Scriptable Object called My Street - Dead End. \line >On Home - Front Yard, attach the ScriptableObject Dead End onto Location West. \line\line >What if we made our code a little more resilient? If one direction is not null, we'll set the other location able to reference it. So basically describing the game out more. \line\line\tab\tab void UpdateLocation ()\line\tab\tab\{\line\tab\tab\tab if (currentLocation.locationEast == null)\line\tab\tab\{\line\tab\tab\tab buttonEast.SetActive(false);\line\tab\tab\}\line\tab\tab else\line\tab\tab\{\line\tab\tab\tab currentLocation.locationEast.locationWest == currentLocation;\line\tab\tab\tab buttonEast.SetActive(true);\line\tab\tab\}\line\line\tab\tab ^Do the same with North, West, and South. \line\tab\tab ^Basically maps out your NWES options more.\line\tab\tab ^Not only do that, but when you play the game it will save the data in \line\tab\tab accordance to the direction you take. \par
+>With ScriptableObjects, you have the shorthand for making these little data pockets that you can put in/use your code, but you can also change the code in these data packets that will persist between sessions.\line >Useful for things like High Scores, User Preferences, Name Changes... \par
+>ScriptableObjects has a bunch of different data fields that you can set - you can make a new one, you can give it default values, and then you can even create it from your menu system.\line >The data can be altered on your GameManager, and persisted, even no longer after play mode.\par
+>Make a new game using ScriptableObjects - you should have at least 10 ScriptableObjects. \line\tab -Make something where if you go to a certain location to the house you get a prize?\line\tab -piCTURES???? ImAgeSS???\par
+>If you want text documents (say, the ASCII Level Loader), make a Resources folder in the Project Menu. \line\tab -Make a silly little text file. LoadFile.txt.\line\tab\line >GameManager - void Start() function\line\tab\line\tab\tab\{\line\tab\tab\tab TextAsset textAsset = Resources.Load<TextAsset>("LoadFile");\line\tab\tab\line\tab\tab\tab Debug.Log("In my file + textAsset.text); \par
+\tab\tab\tab UpdateLocation();\line\tab\tab\}\par
+\tab\tab ^All the things you were doing before with the ASCII Level Loader, where\line\tab\tab you split them up in new lines, and go through each line... so if you want\line\tab\tab to make a text file, Unity will compress them, and you're going to want\line\tab\tab to make sure to do Resources.Load. \par
+\tab\tab ^This is exclusively for IF you want a pre-existing file in your game, that\line\tab\tab you want to ship with it when you do an export. \par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+}
+ 

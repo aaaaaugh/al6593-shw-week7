@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4294f1a26508fd04abe0f83e78cce2d9, type: 3}
+  m_Name: Backyard - Dog House
+  m_EditorClassIdentifier: 
+  locationName: dog house
+  description: 'because you''re kooky you crawl inside the dog house. memories of
+    your old dog yeller flash through your mind. '
+  locationNorth: {fileID: 0}
+  locationSouth: {fileID: 0}
+  locationWest: {fileID: 0}
+  locationEast: {fileID: 11400000, guid: e8cf0efe2d9a44e4d91b0a0c5a85b4a6, type: 2}

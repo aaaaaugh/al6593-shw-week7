@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4294f1a26508fd04abe0f83e78cce2d9, type: 3}
+  m_Name: Home - House
+  m_EditorClassIdentifier: 
+  locationName: 'mi casa '
+  description: 'mi casa es su casa '
+  locationNorth: {fileID: 11400000, guid: e8cf0efe2d9a44e4d91b0a0c5a85b4a6, type: 2}
+  locationSouth: {fileID: 11400000, guid: 140789053fe2b474e90032e03f84f59d, type: 2}
+  locationWest: {fileID: 11400000, guid: bed1b7eac47aad744b2effce8ca2d3f2, type: 2}
+  locationEast: {fileID: 11400000, guid: 364f9ffe5c2cffb45ae078fcb7bce7a4, type: 2}
